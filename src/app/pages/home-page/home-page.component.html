@@ -1,0 +1,31 @@
+<div class="container">
+  <form (ngSubmit)="onSearch()">
+    <h2 class="head">Check weather for your city:</h2>
+    <mat-form-field appearance="outline">
+      <input
+        type="text"
+        aria-label="Select city to find weather"
+        matInput
+        [ngModel]="cityInput()"
+        (ngModelChange)="cityInput.set($event)"
+        [matAutocomplete]="auto"
+        name="searchCity"
+      />
+      <mat-autocomplete #auto="matAutocomplete">
+        @for (option of filteredOptions | async; track option) {
+        <mat-option [value]="option">{{ option }}</mat-option>
+        }
+      </mat-autocomplete>
+      <button
+        type="submit"
+        mat-icon-button
+        matSuffix
+        [attr.aria-label]="'Search weather'"
+      >
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+  </form>
+</div>
+
+<router-outlet />

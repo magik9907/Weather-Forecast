@@ -1,0 +1,19 @@
+<header class="">
+  <h1><a [routerLink]="'/'">Weather Forecast</a></h1>
+  <mat-button-toggle-group
+    name="temperatureMeasure"
+    aria-label="Select temperature measure"
+    [value]="selectedMetric"
+    (change)="selectedMetric"
+  >
+    <mat-button-toggle aria-label="Celsius degrees" value="metric"
+      >&#8451;</mat-button-toggle
+    >
+    <mat-button-toggle aria-label="Fahrenheit  degrees" value="imperial"
+      >&#x2109;</mat-button-toggle
+    >
+    <mat-button-toggle aria-label="Kelvin degrees" value="kelvin"
+      >&deg;&#x212A;</mat-button-toggle
+    >
+  </mat-button-toggle-group>
+</header>

@@ -1,0 +1,19 @@
+@import "../../../colors";
+
+.container {
+  padding: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $backgroundOpacity;
+
+  form {
+    text-align: center;
+    margin-top: 32px;
+  }
+
+  .head {
+    font-size: 2rem;
+    line-height: 2rem;
+  }
+}

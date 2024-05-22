@@ -1,4 +1,45 @@
-/* You can add global styles to this file, and also import other style files */
+@import "./colors";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+:root {
+  --app-link-hover: #00ffaf;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: var(--mat-app-text-color);
+}
+
+a {
+  color: var(--mat-app-text-color);
+  transition: color 0.3s;
+
+  &:hover {
+    color: $textSecondary;
+  }
+}
+
+p,
+div {
+  margin: 0;
+  font-size: 16px;
+}
+
+.sr-only {
+  border: 0 !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  -webkit-clip-path: inset(50%) !important;
+  clip-path: inset(50%) !important;
+  height: 1px !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  position: absolute !important;
+  width: 1px !important;
+  white-space: nowrap !important;
+}

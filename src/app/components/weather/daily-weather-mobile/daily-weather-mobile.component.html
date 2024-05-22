@@ -1,0 +1,37 @@
+<div class="center-container">
+  <button
+    mat-fab
+    color="accent"
+    [disabled]="currentDateIndex() <= 0"
+    aria-label="Go to the previous day"
+    (click)="changeDate(-1)"
+  >
+    <mat-icon>arrow_back_ios</mat-icon>
+  </button>
+  <div class="select-date-container">
+    <mat-form-field>
+      <mat-label>Date</mat-label>
+      <mat-select
+        [ngModel]="currentDateIndex()"
+        (ngModelChange)="currentDateIndex.set($event)"
+      >
+        @for (date of dates; track date) {
+        <mat-option [value]="$index">{{
+          date | date : datePattern
+        }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <button
+    mat-fab
+    [disabled]="currentDateIndex() >= dates.length - 1"
+    color="accent"
+    aria-label="Go to the next day"
+    (click)="changeDate(1)"
+  >
+    <mat-icon>arrow_forward_ios</mat-icon>
+  </button>
+</div>
+
+

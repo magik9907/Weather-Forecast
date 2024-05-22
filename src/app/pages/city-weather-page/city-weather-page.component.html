@@ -1,0 +1,11 @@
+<div class="container">
+  <h2>
+    <span class="sr-only">Weather for city: </span>
+    <strong>{{ cityName() | uppercase }}</strong>
+  </h2>
+  @if(isMobile |async){
+  <app-daily-weather-mobile />
+  } @else {
+  <app-daily-weather-desktop />
+  }
+</div>
