@@ -1,6 +1,10 @@
 .app-icon {
   font-size: 4rem;
-  width: 64px;
-  height: 64px;
   margin: auto;
+}
+
+.app-icon,
+img {
+  width: 100px;
+  height: 100px;
 }

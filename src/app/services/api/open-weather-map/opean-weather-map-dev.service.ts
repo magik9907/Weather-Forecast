@@ -5,17 +5,14 @@ import {
   Forecast8DaysResponse,
   GeolocationResponse,
 } from './types';
+import { HttpClient } from '@angular/common/http';
 
 // new Date()
 //i wtedy new Date().setUTCDate(liczba) to bedzie data
 
 export class OpeanWeatherMapDevService extends OpeanWeatherMapService {
-  constructor() {
-    super();
-  }
-
   override getIconLink(key: string): string {
-    return 'http://testlink';
+    return 'http://testlinkerror';
   }
 
   protected override fetch5DaysForecast(

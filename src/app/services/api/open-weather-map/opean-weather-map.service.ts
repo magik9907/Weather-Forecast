@@ -6,14 +6,26 @@ import {
   WeekWeatherForecast,
 } from '@/types';
 import { WeatherApiService } from '../weather-api.service';
-import { Observable, forkJoin, iif, map, mergeMap, of, tap } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import {
+  Observable,
+  delay,
+  distinctUntilChanged,
+  forkJoin,
+  iif,
+  map,
+  mergeMap,
+  of,
+  takeUntil,
+  tap,
+} from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import {
   Forecast5DaysResponse,
   Forecast8DaysResponse,
   GeolocationResponse,
 } from './types';
 import moment from 'moment';
+import { env } from '@env/env';
 
 export class OpeanWeatherMapService extends WeatherApiService {
   private cityWeather = new Map<string, CityWeather>();
@@ -38,9 +50,6 @@ export class OpeanWeatherMapService extends WeatherApiService {
     '50n': 'foggy',
     '50d': 'foggy',
   };
-  constructor(httpClient?: HttpClient) {
-    super(httpClient);
-  }
 
   override updateCity(city: City): void {
     const key = `${city.name},${city.state},${city.country}`.toUpperCase();
@@ -126,28 +135,58 @@ export class OpeanWeatherMapService extends WeatherApiService {
     );
   }
 
+  private initParams() {
+    let params = new HttpParams();
+    if (env.api_key) params = params.appendAll({ appid: env.api_key });
+    return params;
+  }
+
   protected fetchGeolocationForCity(
     city: string
   ): Observable<GeolocationResponse[]> {
-    throw 'not imeplemented';
+    return of(city).pipe(
+      delay(500),
+      distinctUntilChanged(),
+      mergeMap((city) => {
+        let params = this.initParams();
+        params = params.append('q', city);
+        params = params.append('limit', 10);
+        return this.httpClient.get<GeolocationResponse[]>(
+          `${env.api_url}/geo/1.0/direct`,
+          { params }
+        );
+      })
+    );
   }
 
   protected fetch5DaysForecast(
     lat: number,
     lon: number
   ): Observable<Forecast5DaysResponse> {
-    throw 'Not implemented';
+    let params = this.initParams();
+    params = params.append('lat', lat);
+    params = params.append('lon', lon);
+    return this.httpClient.get<Forecast5DaysResponse>(
+      `${env.api_url}/data/2.5/forecast`,
+      { params }
+    );
   }
 
   protected fetch8DaysForecast(
     lat: number,
     lon: number
   ): Observable<Forecast8DaysResponse> {
-    throw 'Not implemented';
+    let params = this.initParams();
+    params = params.append('lat', lat);
+    params = params.append('lon', lon);
+    return this.httpClient.get<Forecast8DaysResponse>(
+      `${env.api_url}/data/3.0/onecall`,
+      { params }
+    );
   }
 
   override getIconLink(key: string): string {
-    return 'http://invalid' + key;
+    return `https://openweathermap.org/img/w/${key}@2x.png`;
   }
 
   private map5DaysForecast() {

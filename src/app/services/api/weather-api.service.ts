@@ -12,8 +12,8 @@ import { Observable } from 'rxjs';
 
 export abstract class WeatherApiService {
   protected appService = inject(AppService);
+  protected httpClient = inject(HttpClient);
   abstract iconsMap: Record<string, WeatherIcon>;
-  constructor(protected httpClient?: HttpClient) {}
 
   private getUnit() {
     switch (this.appService.selectedMetric()) {
