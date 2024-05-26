@@ -1,27 +1,17 @@
 # WeatherForecast
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.7.
+## Requirements
 
-## Development server
+- **API KEY** from https://openweathermap.org
+- [Docker](https://www.docker.com) or [NodeJS](https://nodejs.org/en)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Run as development server
+1. Install NodeJS
+2. In [./src/env/env.dev.ts](./src/env/env.dev.ts) replace `<API_KEY>` with your api key from https://openweathermap.org
+3. From root folder of project run in terminal: `npm install`
+4. Run `npm run start` for start a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Run in docker
+1. Install docker
+2. In file `docker-compose.yml` replace `<API_KEY>` (environment section) with your api key from https://openweathermap.org
+3. From root folder run command in terminal: `docker compose up`

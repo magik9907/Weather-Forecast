@@ -5,7 +5,11 @@
  */
 
 export type TemperatureMetrics = 'imperial' | 'kelvin' | 'metric';
-export type ENV = { production: boolean; api_key?: string; api_url: string };
+export type ENV = {
+  enable_http_client: boolean;
+  api_key?: string;
+  api_url: string;
+};
 export type WeatherIcon =
   | 'clear_night'
   | 'clear_day'

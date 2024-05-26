@@ -6,6 +6,7 @@ import { OpeanWeatherMapDevService } from '@services/api/open-weather-map/opean-
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { routes } from '@/app/app.routes';
 import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('CityWeatherPageComponent', () => {
   let component: CityWeatherPageComponent;
@@ -16,7 +17,9 @@ describe('CityWeatherPageComponent', () => {
       imports: [CityWeatherPageComponent],
       providers: [
         { provide: WeatherApiService, useClass: OpeanWeatherMapDevService },
-        provideAnimationsAsync('noop'), provideRouter(routes)
+        provideAnimationsAsync('noop'),
+        provideRouter(routes),
+        provideHttpClient(),
       ],
     }).compileComponents();
 

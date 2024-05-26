@@ -16,7 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     {
       provide: WeatherApiService,
-      useClass: env.production
+      useClass: env.enable_http_client
         ? OpeanWeatherMapService
         : OpeanWeatherMapDevService,
     },

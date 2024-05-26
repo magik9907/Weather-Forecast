@@ -6,6 +6,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from '@/app/app.routes';
 import { WeatherApiService } from '@services/api/weather-api.service';
 import { OpeanWeatherMapDevService } from '@services/api/open-weather-map/opean-weather-map-dev.service';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
@@ -15,6 +16,7 @@ describe('HomePageComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HomePageComponent],
       providers: [
+        provideHttpClient(),
         provideAnimationsAsync('noop'),
         provideRouter(routes),
         { provide: WeatherApiService, useClass: OpeanWeatherMapDevService },

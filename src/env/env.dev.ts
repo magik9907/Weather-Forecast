@@ -1,7 +1,7 @@
 import { ENV } from '@/types';
 
 export const env: ENV = {
-  production: false,
+  enable_http_client: false,
   api_url: 'http://api.openweathermap.org',
-  api_key:undefined,
+  api_key: '<API_KEY>',
 };
