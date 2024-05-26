@@ -16,3 +16,8 @@
 2. In [./src/env/env.prod.ts](./src/env/env.prod.ts) replace `<API_KEY>` with your api key from https://openweathermap.org
 3. From root folder run command in terminal: `docker compose up`
 4. After completing step 3, site should be avalaible: http://localhost
+
+
+## Website view
+
+![Web page view](./docs/site.png)

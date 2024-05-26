@@ -12,6 +12,10 @@ import { PurePipe } from '@pipes/pure.pipe';
 import { SpeedPipe } from '@pipes/speed.pipe';
 import { TemperaturePipe } from '@pipes/temperature.pipe';
 
+const roundFunc = (value: number) => {
+  return Math.round((value + Number.EPSILON) * 100) / 100;
+};
+
 @Component({
   selector: 'app-week-weather',
   standalone: true,
@@ -33,18 +37,18 @@ export class WeekWeatherComponent {
   avgPressure = computed(() => {
     const week = this.data().week;
     const sum = week.reduce((buff, next) => buff + next.pressure, 0);
-    return sum / week.length;
+    return roundFunc(sum / week.length);
   });
 
   avgTemperature = computed(() => {
     const week = this.data().week;
     const sum = week.reduce((buff, next) => buff + next.temperature_day, 0);
-    return sum / week.length;
+    return roundFunc(sum / week.length);
   });
   avgWind = computed(() => {
     const week = this.data().week;
     const sum = week.reduce((buff, next) => buff + next.wind, 0);
-    return sum / week.length;
+    return roundFunc(sum / week.length);
   });
 
   getWeekStatsForKey(

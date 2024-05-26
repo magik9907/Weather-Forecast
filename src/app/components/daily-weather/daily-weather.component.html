@@ -73,7 +73,7 @@
     }
   </div>
   <section>
-    @if(weather()|pure: getDayForecast: currentDateIndex() ;as list){
+    @if(weather()|pure: getDayForecast: currentDate() ;as list){
     @if(list.length>0){
     <h3 class="section-title">Weather during day {{ list[0].date }}</h3>
     }

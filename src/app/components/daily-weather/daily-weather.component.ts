@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   input,
   signal,
@@ -45,7 +46,9 @@ export class DailyWeatherComponent {
   appService = inject(AppService);
   readonly datePattern = `dd-MM-YYYY, EEEE`;
   currentDateIndex = signal(0);
-
+  currentDate = computed(
+    () => this.weather().week[this.currentDateIndex()].date
+  );
   get dayWeather() {
     return this.weather().week[this.currentDateIndex()];
   }
@@ -62,7 +65,7 @@ export class DailyWeatherComponent {
     return week.map((x) => x.date).slice(0, 7);
   }
 
-  getDayForecast(weather: CityWeather, idx: number) {
-    return idx < weather.daily.length ? weather.daily[idx].hours : [];
+  getDayForecast(weather: CityWeather, date: string) {
+    return weather.daily.find((d) => d.date == date)?.hours || [];
   }
 }
