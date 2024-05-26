@@ -1,9 +1,7 @@
 import {
   City,
   CityWeather,
-  SpecificWeatherForecast,
   WeatherIcon,
-  WeekWeatherForecast,
 } from '@/types';
 import { HttpClient } from '@angular/common/http';
 import { inject } from '@angular/core';

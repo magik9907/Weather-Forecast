@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DailyWeatherComponent } from './daily-weather.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { WeatherApiService } from '@services/api/weather-api.service';
-import { OpeanWeatherMapDevService } from '@services/api/open-weather-map/opean-weather-map-dev.service';
+import { OpenWeatherMapDevService } from '@services/api/open-weather-map/open-weather-map-dev.service';
 import { cityWeather } from '@test/models';
 
 describe('DailyWeatherComponent', () => {
@@ -15,7 +15,7 @@ describe('DailyWeatherComponent', () => {
       imports: [DailyWeatherComponent],
       providers: [
         provideAnimationsAsync('noop'),
-        { provide: WeatherApiService, useClass: OpeanWeatherMapDevService },
+        { provide: WeatherApiService, useClass: OpenWeatherMapDevService },
       ],
     }).compileComponents();
 

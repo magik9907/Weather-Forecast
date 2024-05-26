@@ -5,7 +5,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideRouter } from '@angular/router';
 import { routes } from '@/app/app.routes';
 import { WeatherApiService } from '@services/api/weather-api.service';
-import { OpeanWeatherMapDevService } from '@services/api/open-weather-map/opean-weather-map-dev.service';
+import { OpenWeatherMapDevService } from '@services/api/open-weather-map/open-weather-map-dev.service';
 import { provideHttpClient } from '@angular/common/http';
 
 describe('HomePageComponent', () => {
@@ -19,7 +19,7 @@ describe('HomePageComponent', () => {
         provideHttpClient(),
         provideAnimationsAsync('noop'),
         provideRouter(routes),
-        { provide: WeatherApiService, useClass: OpeanWeatherMapDevService },
+        { provide: WeatherApiService, useClass: OpenWeatherMapDevService },
       ],
     }).compileComponents();
 

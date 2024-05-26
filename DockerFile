@@ -10,11 +10,8 @@ COPY tsconfig.app.json /app/tsconfig.app.json
 COPY tsconfig.spec.json /app/tsconfig.spec.json
 COPY nginx /app/nginx
 
-ENV CI=true
-ENV PORT=4200
-
 RUN npm install
-RUN npm run build --verbose
+RUN npm run build --configuration=production --verbose
 
 
 FROM nginx:1.25.5-alpine
@@ -24,12 +21,8 @@ WORKDIR /usr/share/nginx/html
 
 RUN rm -rf ./*
 
-COPY --from=build /app/dist/weather-forecast .
+COPY --from=build /app/dist/weather-forecast/browser .
 
 WORKDIR /
 
-COPY --from=build /app/nginx/docker-entrypoint.sh /docker-entrypoint.d/init.sh
-RUN chmod +x /docker-entrypoint.d/init.sh
-
 EXPOSE 80
-ENTRYPOINT ["./docker-entrypoint.d/init.sh"]

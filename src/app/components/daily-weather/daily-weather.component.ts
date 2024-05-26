@@ -14,7 +14,7 @@ import { AsyncPipe, DatePipe } from '@angular/common';
 import { WeatherIconComponent } from '../weather-icon/weather-icon.component';
 import { TemperaturePipe } from '@pipes/temperature.pipe';
 import { AppService } from '@services/app/app.service';
-import { CityWeather, SpecificWeatherForecast } from '@/types';
+import { CityWeather } from '@/types';
 import { PurePipe } from '@pipes/pure.pipe';
 import { SpeedPipe } from '@pipes/speed.pipe';
 import { WeatherChartsComponent } from '@components/weather-charts/weather-charts.component';
@@ -55,7 +55,7 @@ export class DailyWeatherComponent {
   }
 
   get isMobile() {
-    return this.appService.isMobileView;
+    return this.appService.isMobileViewSubject;
   }
 
   getWeekDays(week: CityWeather['week']): string[] {

@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  OnInit,
   effect,
   input,
 } from '@angular/core';
@@ -24,9 +23,9 @@ export class LineChartComponent {
   marginLeft = input<number>(0);
   marginRight = input<number>(0);
   marginBottom = input<number>(20);
-  xScale?: any;
+  xScale?: d3.ScaleBand<string>;
   yScale?: d3.ScaleLinear<number, number, never>;
-  svg?: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>;
+  svg?: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>; //eslint-disable-line
 
   verticalMinMax: number[] = [];
   constructor() {
@@ -92,11 +91,10 @@ export class LineChartComponent {
           .attr('stroke-opacity', 0.1)
       );
   }
-
   private lineConfiguration() {
     const line = d3
-      .line<Record<any, any>>()
-      .x((d) => this.xScale!(d['key']))
+      .line<{ key: string; value: number }>()
+      .x((d) => this.xScale!(d['key'])!)
       .y((d) => this.yScale!(d['value']));
 
     this.svg!.append('path')
@@ -106,10 +104,10 @@ export class LineChartComponent {
       .attr('style', `transform:translate(30px, 0px)`)
       .attr('d', line(this.data()));
 
-    this.data().forEach((data, idx) => {
+    this.data().forEach((data) => {
       this.svg!.append('text')
-        .attr('x', (d, i) => this.xScale!(data.key))
-        .attr('y', (d, i) => {
+        .attr('x', () => this.xScale!(data.key)!)
+        .attr('y', () => {
           return this.yScale!(data.value);
         })
         .attr(
@@ -118,7 +116,7 @@ export class LineChartComponent {
             15 + (data.value < 100 ? 9 : -3)
           }px,-7px)`
         )
-        .text((_, i) => {
+        .text(() => {
           return data.value;
         });
     });

@@ -8,6 +8,7 @@ import {
 import { WeatherApiService } from '../weather-api.service';
 import {
   Observable,
+  catchError,
   delay,
   distinctUntilChanged,
   forkJoin,
@@ -15,10 +16,9 @@ import {
   map,
   mergeMap,
   of,
-  takeUntil,
   tap,
 } from 'rxjs';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 import {
   Forecast5DaysResponse,
   Forecast8DaysResponse,
@@ -27,7 +27,7 @@ import {
 import moment from 'moment';
 import { env } from '@env/env';
 
-export class OpeanWeatherMapService extends WeatherApiService {
+export class OpenWeatherMapService extends WeatherApiService {
   private cityWeather = new Map<string, CityWeather>();
   private citiesSearchByKeyMap = new Map<string, City[]>();
   iconsMap: Record<string, WeatherIcon> = {
@@ -129,6 +129,10 @@ export class OpeanWeatherMapService extends WeatherApiService {
           ),
         });
       }),
+      catchError((e: HttpErrorResponse, c) => {
+        this.appService.messageSubject.next({ code: e.status });
+        return [];
+      }),
       tap((v) =>
         this.cityWeather.set(key + this.appService.selectedMetric(), v)
       )
@@ -155,6 +159,10 @@ export class OpeanWeatherMapService extends WeatherApiService {
           `${env.api_url}/geo/1.0/direct`,
           { params }
         );
+      }),
+      catchError((e: HttpErrorResponse, c) => {
+        this.appService.messageSubject.next({ code: e.status });
+        return [];
       })
     );
   }
@@ -164,8 +172,11 @@ export class OpeanWeatherMapService extends WeatherApiService {
     lon: number
   ): Observable<Forecast5DaysResponse> {
     let params = this.initParams();
-    params = params.append('lat', lat);
-    params = params.append('lon', lon);
+    params = params.appendAll({ lat, lon });
+    const metric = this.appService.selectedMetric();
+    if (metric) {
+      params=params.append('units', metric);
+    }
     return this.httpClient.get<Forecast5DaysResponse>(
       `${env.api_url}/data/2.5/forecast`,
       { params }
@@ -177,8 +188,12 @@ export class OpeanWeatherMapService extends WeatherApiService {
     lon: number
   ): Observable<Forecast8DaysResponse> {
     let params = this.initParams();
-    params = params.append('lat', lat);
-    params = params.append('lon', lon);
+    params = params.appendAll({ lat, lon,exclude:'current,minutely,hourly,alerts' });
+    const metric = this.appService.selectedMetric();
+    if (metric) {
+      params=params.append('units', metric);
+    }
+
     return this.httpClient.get<Forecast8DaysResponse>(
       `${env.api_url}/data/3.0/onecall`,
       { params }
@@ -186,16 +201,15 @@ export class OpeanWeatherMapService extends WeatherApiService {
   }
 
   override getIconLink(key: string): string {
-    return `https://openweathermap.org/img/w/${key}@2x.png`;
+    return `https://openweathermap.org/img/w/${key}.png`;
   }
 
   private map5DaysForecast() {
     return map<Forecast5DaysResponse, SpecificWeatherForecast[]>((source) => {
       const objMap = new Map<string, SpecificWeatherForecast>();
       source.list.forEach((s) => {
-        let [date, time] = s.dt_txt.split(' ');
-        time = time.replace(/(:00)$/, '');
-        let obj: SpecificWeatherForecast = objMap.get(date) || {
+        const [date, time] = s.dt_txt.split(' ');
+        const obj: SpecificWeatherForecast = objMap.get(date) || {
           date,
           hours: [],
           metric: this.appService.selectedMetric(),
@@ -204,7 +218,7 @@ export class OpeanWeatherMapService extends WeatherApiService {
 
         obj.hours.push({
           date,
-          time,
+          time: time.replace(/(:00)$/, ''),
           clouds: s.clouds.all,
           humidity: s.main.humidity,
           pressure: s.main.pressure,

@@ -1,16 +1,14 @@
+/* eslint-disable */
+
 import { Observable, of } from 'rxjs';
-import { OpeanWeatherMapService } from './opean-weather-map.service';
+import { OpenWeatherMapService } from './open-weather-map.service';
 import {
   Forecast5DaysResponse,
   Forecast8DaysResponse,
   GeolocationResponse,
 } from './types';
-import { HttpClient } from '@angular/common/http';
 
-// new Date()
-//i wtedy new Date().setUTCDate(liczba) to bedzie data
-
-export class OpeanWeatherMapDevService extends OpeanWeatherMapService {
+export class OpenWeatherMapDevService extends OpenWeatherMapService {
   override getIconLink(key: string): string {
     return 'http://testlinkerror';
   }

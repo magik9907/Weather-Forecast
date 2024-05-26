@@ -5,7 +5,7 @@ import { WeatherApiService } from '@services/api/weather-api.service';
 
 export const cityWeatherResolverResolver: ResolveFn<CityWeather> = (
   route,
-  state
+  state // eslint-disable-line
 ) => {
   return inject(WeatherApiService).getCityWeatherByString(
     route.paramMap.get('cityName') || '',

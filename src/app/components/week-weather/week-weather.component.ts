@@ -26,7 +26,8 @@ export class WeekWeatherComponent {
     data: WeekWeatherForecast
   ): { key: Date; value: number }[] {
     return data
-      .map((v: any) => {
+        //eslint-disable-next-line
+        .map((v: any) => {
         return { key: v.date, value: v[key] };
       })
       .slice(0, 7);

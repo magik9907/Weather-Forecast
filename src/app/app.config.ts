@@ -6,8 +6,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient } from '@angular/common/http';
 import { WeatherApiService } from '@services/api/weather-api.service';
 import { env } from '@env/env';
-import { OpeanWeatherMapDevService } from '@services/api/open-weather-map/opean-weather-map-dev.service';
-import { OpeanWeatherMapService } from '@services/api/open-weather-map/opean-weather-map.service';
+import { OpenWeatherMapDevService } from '@services/api/open-weather-map/open-weather-map-dev.service';
+import { OpenWeatherMapService } from '@services/api/open-weather-map/open-weather-map.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,8 +17,8 @@ export const appConfig: ApplicationConfig = {
     {
       provide: WeatherApiService,
       useClass: env.enable_http_client
-        ? OpeanWeatherMapService
-        : OpeanWeatherMapDevService,
+        ? OpenWeatherMapService
+        : OpenWeatherMapDevService,
     },
   ],
 };

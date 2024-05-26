@@ -1,15 +1,12 @@
-import { CityWeather, WeekWeatherForecast } from '@/types';
+import { CityWeather } from '@/types';
 import { UpperCasePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   OnDestroy,
   OnInit,
-  inject,
-  input,
   signal,
 } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
 import { LineChartComponent } from '@components/charts/line-chart/line-chart.component';
 import { DailyWeatherComponent } from '@components/daily-weather/daily-weather.component';
@@ -48,9 +45,9 @@ export class CityWeatherPageComponent implements OnInit, OnDestroy {
       this.data.set(d['weather']);
     });
     this.subscription.add(
-      this.appService.metric$
+      this.appService.metricSubject
         .pipe(
-          mergeMap((v) => {
+          mergeMap(() => {
             return this.weatherApi.getCityWeather(this.data()!.geolocation);
           })
         )

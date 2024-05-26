@@ -1,17 +1,17 @@
 import { Component, DebugElement, signal } from '@angular/core';
 import { LoadedErrorDirective } from './loaded-error.directive';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Subscription } from 'rxjs';
 @Component({
   standalone: true,
   template: `
     <img
       src="http://invalid"
       [appLoadedError]
+      alt=""
       (appLoadedError)="onImgLoadError()"
     />
-    <img src="http://invalid2" />
+    <img src="http://invalid2" alt="" />
   `,
   imports: [LoadedErrorDirective],
 })
@@ -44,7 +44,7 @@ describe('LoadedDirective', () => {
       LoadedErrorDirective
     ) as LoadedErrorDirective;
     spyOn(dir.appLoadedError, 'emit');
-    dir.onLoad({ type: 'error' } as any);
+    dir.onLoad({ type: 'error' } as any); //eslint-disable-line
     expect(dir.appLoadedError.emit).toHaveBeenCalledWith(true);
   });
 
@@ -53,7 +53,7 @@ describe('LoadedDirective', () => {
       LoadedErrorDirective
     ) as LoadedErrorDirective;
     spyOn(dir.appLoadedError, 'emit');
-    dir.onLoad({ type: 'success' } as any);
+    dir.onLoad({ type: 'success' } as any); //eslint-disable-line
     expect(dir.appLoadedError.emit).toHaveBeenCalledWith(false);
   });
 });

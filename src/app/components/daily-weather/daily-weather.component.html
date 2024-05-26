@@ -1,5 +1,5 @@
 <div>
-  <div [class.days-container]="!(isMobile | async)">
+  <div [class.days-container]="(isMobile | async) === false">
     <div class="center-container">
       @if(isMobile|async){
       <button
@@ -43,7 +43,7 @@
         @for (date of weather().week|pure: getWeekDays ; track date) {
         <button
           mat-raised-button
-          [color]="$index == currentDateIndex() ? 'accent' : 'primary'"
+          [color]="$index === currentDateIndex() ? 'accent' : 'primary'"
           (click)="currentDateIndex.set($index)"
         >
           <span class="sr-only">Show weather for</span> {{ date }}
@@ -77,7 +77,10 @@
     @if(list.length>0){
     <h3 class="section-title">Weather during day {{ list[0].date }}</h3>
     }
-    <div class="time-container" [class.horizontal]="!(isMobile | async)">
+    <div
+      class="time-container"
+      [class.horizontal]="(isMobile | async) === false"
+    >
       @for(hour of list ; track hour.time){
       <div class="hour-container" tabindex="0">
         <p><span class="sr-only">Weather at: </span>{{ hour.time }}</p>

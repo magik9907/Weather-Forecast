@@ -1,4 +1,3 @@
-import { HttpStatusCode } from '@angular/common/http';
 
 export interface GeolocationResponse {
   name: string;

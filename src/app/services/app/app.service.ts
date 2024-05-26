@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { TemperatureMetrics } from '../../../types';
+import { Message, TemperatureMetrics } from '@/types';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 
 @Injectable({
@@ -7,20 +7,22 @@ import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 })
 export class AppService {
   selectedMetric = signal<TemperatureMetrics>('metric');
-  metric$ = new Subject<TemperatureMetrics>();
-  isMobileView = new BehaviorSubject(false);
+  metricSubject = new Subject<TemperatureMetrics>();
+  isMobileViewSubject = new BehaviorSubject(false);
+  messageSubject = new Subject<Message>();
   private subscription = new Subscription();
   constructor() {
     this.subscription.add(
-      this.metric$.subscribe((v) => {
+      this.metricSubject.subscribe((v) => {
         this.selectedMetric.set(v);
       })
     );
   }
 
   destroy() {
-    this.isMobileView.complete();
-    this.metric$.complete();
+    this.isMobileViewSubject.complete();
+    this.metricSubject.complete();
     this.subscription.unsubscribe();
+    this.messageSubject.complete();
   }
 }

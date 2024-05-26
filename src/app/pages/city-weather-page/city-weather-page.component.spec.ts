@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CityWeatherPageComponent } from './city-weather-page.component';
 import { WeatherApiService } from '@services/api/weather-api.service';
-import { OpeanWeatherMapDevService } from '@services/api/open-weather-map/opean-weather-map-dev.service';
+import { OpenWeatherMapDevService } from '@services/api/open-weather-map/open-weather-map-dev.service';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { routes } from '@/app/app.routes';
 import { provideRouter } from '@angular/router';
@@ -16,7 +16,7 @@ describe('CityWeatherPageComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CityWeatherPageComponent],
       providers: [
-        { provide: WeatherApiService, useClass: OpeanWeatherMapDevService },
+        { provide: WeatherApiService, useClass: OpenWeatherMapDevService },
         provideAnimationsAsync('noop'),
         provideRouter(routes),
         provideHttpClient(),

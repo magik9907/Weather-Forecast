@@ -16,6 +16,7 @@ import { LineChartComponent } from '@components/charts/line-chart/line-chart.com
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WeatherChartsComponent {
+  //eslint-disable-next-line
   data = input.required<{ [key: string]: any }[]>();
   keyName = input.required<string>();
   selectedInfo = signal('temperature_day');
@@ -24,6 +25,7 @@ export class WeatherChartsComponent {
     return this.data().map((v) => {
       return {
         key: v[this.keyName()],
+        //eslint-disable-next-line
         value: (v as { [key: string]: any })[this.selectedInfo()],
       };
     });

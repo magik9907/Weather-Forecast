@@ -5,6 +5,12 @@
  */
 
 export type TemperatureMetrics = 'imperial' | 'kelvin' | 'metric';
+
+export interface Message {
+  message?: string;
+  code?: number;
+}
+
 export type ENV = {
   enable_http_client: boolean;
   api_key?: string;

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WeatherIconComponent } from './weather-icon.component';
-import { OpeanWeatherMapDevService } from '@services/api/open-weather-map/opean-weather-map-dev.service';
+import { OpenWeatherMapDevService } from '@services/api/open-weather-map/open-weather-map-dev.service';
 import { WeatherApiService } from '@services/api/weather-api.service';
 import { provideHttpClient } from '@angular/common/http';
 
@@ -13,7 +13,7 @@ describe('WeatherIconComponent', () => {
     await TestBed.configureTestingModule({
       imports: [WeatherIconComponent],
       providers: [
-        { provide: WeatherApiService, useClass: OpeanWeatherMapDevService },
+        { provide: WeatherApiService, useClass: OpenWeatherMapDevService },
         provideHttpClient(),
       ],
     }).compileComponents();

@@ -20,6 +20,6 @@ export class HeaderComponent {
   }
 
   setSelectedMetric(event: TemperatureMetrics) {
-    this.appService.metric$.next(event);
+    this.appService.metricSubject.next(event);
   }
 }
