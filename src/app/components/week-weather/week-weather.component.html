@@ -1,0 +1,8 @@
+@if(data().week.length>6){
+<section>
+  <h3 class="week-weather">
+    Week weather: {{ data().week[0].date }} - {{ data().week[6].date }}
+  </h3>
+  <app-weather-charts [data]="data().week" keyName="date" />
+</section>
+}

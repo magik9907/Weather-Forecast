@@ -1,0 +1,18 @@
+<div class="app-icon">
+  @if(imgLoadError()){
+  <mat-icon
+    class="app-icon material-symbols-outlined"
+    aria-hidden="false"
+    [ariaLabel]="title()"
+    [fontIcon]="mapIcon(false)"
+  ></mat-icon>
+  } @else{
+  <img
+    class="app=icon"
+    [src]="mapIcon(true)"
+    [alt]="title()"
+    appLoadedError
+    (appLoadedError)="onImgLoadError()"
+  />
+  }
+</div>

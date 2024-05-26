@@ -1,11 +1,14 @@
+@if(data(); as d){ @defer {
 <div class="container">
   <h2>
     <span class="sr-only">Weather for city: </span>
-    <strong>{{ cityName() | uppercase }}</strong>
+    <strong
+      >{{ d.geolocation.name | uppercase }} - {{ d.geolocation.state }},
+      {{ d.geolocation.country }}</strong
+    >
   </h2>
-  @if(isMobile |async){
-  <app-daily-weather-mobile />
-  } @else {
-  <app-daily-weather-desktop />
-  }
+  <app-daily-weather [weather]="d" />
 </div>
+
+<app-week-weather [data]="d" />
+} }

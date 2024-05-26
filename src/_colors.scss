@@ -16,3 +16,4 @@ $app-theme: mat.define-light-theme(
 $background: mat.get-theme-color($app-theme, primary, default);
 $backgroundOpacity: rgb(from $background r g b / 0.2);
 $textSecondary: mat.get-theme-color($app-theme, primary, secondary);
+$decorative: mat.get-theme-color($app-theme, accent, default);

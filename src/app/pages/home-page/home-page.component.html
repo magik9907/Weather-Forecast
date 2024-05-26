@@ -7,13 +7,17 @@
         aria-label="Select city to find weather"
         matInput
         [ngModel]="cityInput()"
-        (ngModelChange)="cityInput.set($event)"
+        (ngModelChange)="setInput($event)"
         [matAutocomplete]="auto"
         name="searchCity"
+        [aria-describedby]="cityNotSelectedError() ? 'city-select-err' : ''"
       />
       <mat-autocomplete #auto="matAutocomplete">
-        @for (option of filteredOptions | async; track option) {
-        <mat-option [value]="option">{{ option }}</mat-option>
+        @for (option of filteredOptions() | async; track option) {
+        <mat-option [value]="option"
+          >{{ option.name }}, {{ option.state }},
+          {{ option.country }}</mat-option
+        >
         }
       </mat-autocomplete>
       <button
@@ -25,7 +29,11 @@
         <mat-icon>search</mat-icon>
       </button>
     </mat-form-field>
+    @if(cityNotSelectedError()){
+    <mat-error [style]="{ 'font-size': '1.3rem' }"
+      ><p id="city-select-err">Select city from list is required</p></mat-error
+    >
+    }
   </form>
 </div>
-
 <router-outlet />

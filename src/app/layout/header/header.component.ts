@@ -19,7 +19,7 @@ export class HeaderComponent {
     return this.appService.selectedMetric();
   }
 
-  set selectedMetric($event: TemperatureMetrics) {
-    this.appService.selectedMetric.set($event);
+  setSelectedMetric(event: TemperatureMetrics) {
+    this.appService.metric$.next(event);
   }
 }

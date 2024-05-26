@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomePageComponent } from './pages/home-page/home-page.component';
+import { cityWeatherResolverResolver } from './resolvers/city-weather-resolver.resolver';
 
 export const routes: Routes = [
   {
@@ -10,11 +11,12 @@ export const routes: Routes = [
       ),
     children: [
       {
-        path: 'city/:cityName',
+        path: 'country/:country/state/:state/city/:cityName',
         loadComponent: () =>
           import('./pages/city-weather-page/city-weather-page.component').then(
             (m) => m.CityWeatherPageComponent
           ),
+        resolve:{weather:cityWeatherResolverResolver}
       },
     ],
   },

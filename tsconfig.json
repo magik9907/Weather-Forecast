@@ -24,6 +24,9 @@
     ],
     "baseUrl": ".",
     "paths": {
+      "@test/*": ["src/app/test/*"],
+      "@directives/*": ["src/app/directives/*"],
+      "@pipes/*": ["src/app/pipes/*"],
       "@services/*": ["src/app/services/*"],
       "@components/*": ["src/app/components/*"],
       "@env/*": ["src/env/*"],

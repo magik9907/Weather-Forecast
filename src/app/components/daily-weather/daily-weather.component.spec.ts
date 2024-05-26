@@ -1,27 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HomePageComponent } from './home-page.component';
+import { DailyWeatherComponent } from './daily-weather.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideRouter } from '@angular/router';
-import { routes } from '@/app/app.routes';
 import { WeatherApiService } from '@services/api/weather-api.service';
 import { OpeanWeatherMapDevService } from '@services/api/open-weather-map/opean-weather-map-dev.service';
+import { cityWeather } from '@test/models';
 
-describe('HomePageComponent', () => {
-  let component: HomePageComponent;
-  let fixture: ComponentFixture<HomePageComponent>;
+describe('DailyWeatherComponent', () => {
+  let component: DailyWeatherComponent;
+  let fixture: ComponentFixture<DailyWeatherComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HomePageComponent],
+      imports: [DailyWeatherComponent],
       providers: [
         provideAnimationsAsync('noop'),
-        provideRouter(routes),
         { provide: WeatherApiService, useClass: OpeanWeatherMapDevService },
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HomePageComponent);
+    fixture = TestBed.createComponent(DailyWeatherComponent);
+    fixture.componentRef.setInput('weather', cityWeather);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

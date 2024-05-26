@@ -1,15 +1,12 @@
 @import "./colors";
 
-:root {
-  --app-link-hover: #00ffaf;
-}
-
 html,
 body {
   height: 100%;
 }
 
 body {
+  overflow-x: hidden;
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   color: var(--mat-app-text-color);
@@ -27,7 +24,6 @@ a {
 p,
 div {
   margin: 0;
-  font-size: 16px;
 }
 
 .sr-only {
@@ -42,4 +38,8 @@ div {
   position: absolute !important;
   width: 1px !important;
   white-space: nowrap !important;
+}
+
+.center {
+  text-align: center;
 }

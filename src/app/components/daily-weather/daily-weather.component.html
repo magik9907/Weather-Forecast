@@ -1,0 +1,106 @@
+<div>
+  <div [class.days-container]="!(isMobile | async)">
+    <div class="center-container">
+      @if(isMobile|async){
+      <button
+        mat-fab
+        color="accent"
+        [disabled]="currentDateIndex() <= 0"
+        aria-label="Go to the previous day"
+        (click)="changeDate(-1)"
+      >
+        <mat-icon>arrow_back_ios</mat-icon>
+      </button>
+      <div class="select-date-container">
+        <form>
+          <mat-form-field>
+            <mat-label>Date</mat-label>
+            <mat-select
+              name="date-picker"
+              [ngModel]="currentDateIndex()"
+              (ngModelChange)="currentDateIndex.set($event)"
+            >
+              @for (date of weather().week|pure: getWeekDays ; track date) {
+              <mat-option [value]="$index">{{
+                date | date : datePattern
+              }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </form>
+      </div>
+      <button
+        mat-fab
+        [disabled]="currentDateIndex() >= 6"
+        color="accent"
+        aria-label="Go to the next day"
+        (click)="changeDate(1)"
+      >
+        <mat-icon>arrow_forward_ios</mat-icon>
+      </button>
+      }@else{
+      <div class="date-picker">
+        @for (date of weather().week|pure: getWeekDays ; track date) {
+        <button
+          mat-raised-button
+          [color]="$index == currentDateIndex() ? 'accent' : 'primary'"
+          (click)="currentDateIndex.set($index)"
+        >
+          <span class="sr-only">Show weather for</span> {{ date }}
+        </button>
+        }
+      </div>
+      }
+    </div>
+    @if(dayWeather; as dw){
+    <div class="hour-container" tabindex="0">
+      <span class="sr-only">Expected weather for day {{ dw.date }}</span>
+      <div class="info-container">
+        <p>Temperature: {{ dw.temperature_day | temperature }}</p>
+        <p>
+          Pressure: {{ dw.pressure }} <span aria-hidden="true">hPa</span
+          ><span class="sr-only">Hectopascal</span>
+        </p>
+        <p>Rain<span class="sr-only"> change</span>: {{ dw.humidity }}%</p>
+        <p>Wind: {{ dw.wind | speed }}</p>
+      </div>
+      <div class="divider"></div>
+      <app-weather-icon
+        [icon]="dw.weather.icon"
+        [label]="dw.weather.description"
+      ></app-weather-icon>
+    </div>
+    }
+  </div>
+  <section>
+    @if(weather()|pure: getDayForecast: currentDateIndex() ;as list){
+    @if(list.length>0){
+    <h3 class="section-title">Weather during day {{ list[0].date }}</h3>
+    }
+    <div class="time-container" [class.horizontal]="!(isMobile | async)">
+      @for(hour of list ; track hour.time){
+      <div class="hour-container" tabindex="0">
+        <p><span class="sr-only">Weather at: </span>{{ hour.time }}</p>
+        <div class="divider"></div>
+        <div class="info-container">
+          <p>Temperature: {{ hour.temperature_day | temperature }}</p>
+          <p>
+            Pressure: {{ hour.pressure }} <span aria-hidden="true">hPa</span
+            ><span class="sr-only">Hectopascal</span>
+          </p>
+          <p>Rain<span class="sr-only"> change</span>: {{ hour.humidity }}%</p>
+          <p>Wind: {{ hour.wind | speed }}</p>
+        </div>
+        <div class="divider"></div>
+        <app-weather-icon
+          [icon]="hour.weather.icon"
+          [label]="hour.weather.description"
+        ></app-weather-icon>
+      </div>
+      }
+    </div>
+    @if(list.length>5){
+    <app-weather-charts [data]="list" keyName="time" />
+    } }
+  </section>
+</div>

@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   signal,
 } from '@angular/core';
@@ -11,8 +12,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { AsyncPipe } from '@angular/common';
-import { of } from 'rxjs';
 import { Router, RouterOutlet } from '@angular/router';
+import { WeatherApiService } from '@services/api/weather-api.service';
+import { City } from '@/types';
 
 @Component({
   selector: 'app-home-page',
@@ -32,12 +34,40 @@ import { Router, RouterOutlet } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePageComponent {
-  cityInput = signal('');
-  filteredOptions = of(['London', 'Warsaw']);
-
+  weatherApi = inject(WeatherApiService);
+  city = signal<City | null>(null);
+  cityInput = signal<string>('');
+  filteredOptions = computed(() =>
+    this.weatherApi.searchCity(this.cityInput())
+  );
   route = inject(Router);
-
+  cityNotSelectedError = signal(false);
   onSearch() {
-    this.route.navigate(['weather', 'city', this.cityInput()]);
+    if (this.city())
+      this.route.navigate([
+        'weather',
+        'country',
+        this.city()?.country,
+        'state',
+        this.city()?.state,
+        'city',
+        this.city()?.name,
+      ]);
+    else {
+      this.cityNotSelectedError.set(true);
+    }
+  }
+
+  setInput(event: string | City) {
+    if (typeof event == 'object') {
+      const city = event as City;
+      this.cityInput.set(`${city.name},${city.state},${city.country}`);
+      this.city.set(event);
+      this.weatherApi.updateCity(city);
+      this.cityNotSelectedError.set(false);
+    } else {
+      this.cityInput.set(event as string);
+      this.city.set(null);
+    }
   }
 }

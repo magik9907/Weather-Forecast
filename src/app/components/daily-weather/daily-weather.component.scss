@@ -1,0 +1,100 @@
+@import "../../../colors";
+.center-container {
+  text-align: center;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  line-height: 2rem;
+}
+
+.days-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.select-date-container {
+  display: inline;
+  margin-left: 16px;
+  margin-right: 16px;
+}
+.date-picker {
+  display: flex;
+  margin-bottom: 16px;
+  justify-content: space-around;
+  flex-wrap: wrap;
+
+  button {
+    margin: 16px;
+  }
+}
+.time-container {
+  &.horizontal {
+    justify-content: space-around;
+    display: flex;
+    width: 100%;
+    overflow: auto;
+
+    .hour-container {
+      display: flex;
+      flex-direction: column;
+      margin: 4px;
+
+      &:first-child {
+        margin-left: 50px;
+      }
+
+      &:last-child {
+        margin-right: 50px;
+      }
+
+      .divider {
+        height: 3px;
+        width: 80%;
+      }
+      .info-container {
+        text-align: left;
+        width: 164px;
+      }
+    }
+  }
+  p {
+    margin: 0;
+  }
+}
+
+.hour-container {
+  margin: 4px auto;
+  display: flex;
+  max-width: 400px;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  text-align: center;
+  border-radius: 16px;
+  border-bottom: 2px solid $decorative;
+  box-shadow: 0 0 2px 0px grey;
+  padding: 8px;
+
+  &:hover {
+    background-color: $backgroundOpacity;
+  }
+
+  .divider {
+    height: 80px;
+    width: 3px;
+    border-radius: 3px;
+    background-color: $decorative;
+    margin: 8px;
+  }
+
+  .info-container {
+    width: 100%;
+  }
+}
+
+form {
+  display: inline;
+}

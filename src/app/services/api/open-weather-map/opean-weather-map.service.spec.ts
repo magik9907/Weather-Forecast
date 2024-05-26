@@ -1,18 +1,23 @@
 import { TestBed } from '@angular/core/testing';
 
 import { OpeanWeatherMapService } from './opean-weather-map.service';
-import { WeatherApiService } from '../WeatherApi.service';
+import { provideHttpClient } from '@angular/common/http';
+import { OpeanWeatherMapDevService } from './opean-weather-map-dev.service';
 
 describe('OpeanWeatherMapService', () => {
-  let service: WeatherApiService;
+  let service: OpeanWeatherMapService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: WeatherApiService, useClass: OpeanWeatherMapService },
+        {
+          provide: OpeanWeatherMapService,
+          useClass: OpeanWeatherMapDevService,
+        },
+        provideHttpClient(),
       ],
     });
-    service = TestBed.inject(WeatherApiService);
+    service = TestBed.inject(OpeanWeatherMapService);
   });
 
   it('should be created', () => {

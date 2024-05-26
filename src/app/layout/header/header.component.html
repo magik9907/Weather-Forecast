@@ -4,7 +4,7 @@
     name="temperatureMeasure"
     aria-label="Select temperature measure"
     [value]="selectedMetric"
-    (change)="selectedMetric"
+    (change)="setSelectedMetric($event.value)"
   >
     <mat-button-toggle aria-label="Celsius degrees" value="metric"
       >&#8451;</mat-button-toggle

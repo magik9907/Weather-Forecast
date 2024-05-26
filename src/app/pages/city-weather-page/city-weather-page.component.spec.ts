@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CityWeatherPageComponent } from './city-weather-page.component';
+import { WeatherApiService } from '@services/api/weather-api.service';
+import { OpeanWeatherMapDevService } from '@services/api/open-weather-map/opean-weather-map-dev.service';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { routes } from '@/app/app.routes';
+import { provideRouter } from '@angular/router';
 
 describe('CityWeatherPageComponent', () => {
   let component: CityWeatherPageComponent;
@@ -8,10 +13,13 @@ describe('CityWeatherPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CityWeatherPageComponent]
-    })
-    .compileComponents();
-    
+      imports: [CityWeatherPageComponent],
+      providers: [
+        { provide: WeatherApiService, useClass: OpeanWeatherMapDevService },
+        provideAnimationsAsync('noop'), provideRouter(routes)
+      ],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(CityWeatherPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

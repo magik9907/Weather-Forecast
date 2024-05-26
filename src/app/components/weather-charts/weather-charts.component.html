@@ -1,0 +1,31 @@
+<div class="chart-center">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="selectedInfo.set('temperature_day')"
+  >
+    <span class="sr-only">Schow weather forecast for:</span>
+    Temperature
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="selectedInfo.set('pressure')"
+  >
+    <span class="sr-only">Schow weather forecast for:</span>
+    Pressure
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="selectedInfo.set('humidity')"
+  >
+    <span class="sr-only">Schow weather forecast for:</span>
+    Rain
+  </button>
+  <button mat-raised-button color="primary" (click)="selectedInfo.set('wind')">
+    <span class="sr-only">Schow weather forecast for:</span>
+    Wind
+  </button>
+</div>
+<app-line-chart [data]="mapToKeyMap()" />

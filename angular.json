@@ -96,6 +96,12 @@
               "@angular/material/prebuilt-themes/purple-green.css",
               "src/styles.scss"
             ],
+            "fileReplacements": [
+              {
+                "replace": "src/env/env.ts",
+                "with": "src/env/env.dev.ts"
+              }
+            ],
             "scripts": []
           }
         }

@@ -1,0 +1,12 @@
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'pure',
+  pure: true,
+  standalone: true,
+})
+export class PurePipe implements PipeTransform {
+  transform(value: any, func: (...arg: any) => any, ...args: any[]): any {
+    return func(value, ...args);
+  }
+}
