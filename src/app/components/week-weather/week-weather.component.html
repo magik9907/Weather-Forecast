@@ -3,6 +3,15 @@
   <h3 class="week-weather">
     Week weather: {{ data().week[0].date }} - {{ data().week[6].date }}
   </h3>
+  <div class="week-stats">
+    <p>
+      Average pressure in week: {{ avgPressure() }}
+      <span aria-hidden="true">hPa</span
+      ><span class="sr-only">Hectopascal</span>
+    </p>
+    <p>Average temperature in week: {{ avgTemperature() | temperature }}</p>
+    <p>Average wind in week: {{ avgWind() | speed }}</p>
+  </div>
   <app-weather-charts [data]="data().week" keyName="date" />
 </section>
 }
