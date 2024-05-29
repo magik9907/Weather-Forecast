@@ -12,7 +12,7 @@ import { LineChartComponent } from '@components/charts/line-chart/line-chart.com
 import { DailyWeatherComponent } from '@components/daily-weather/daily-weather.component';
 import { WeekWeatherComponent } from '@components/week-weather/week-weather.component';
 import { PurePipe } from '@pipes/pure.pipe';
-import { WeatherApiService } from '@services/api/weather-api.service';
+import { WeatherForecastService } from '@services/forecast/weather-forecast.service';
 import { AppService } from '@services/app/app.service';
 import { Subscription, mergeMap } from 'rxjs';
 
@@ -37,7 +37,7 @@ export class CityWeatherPageComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private appService: AppService,
-    private weatherApi: WeatherApiService
+    private weatherApi: WeatherForecastService
   ) {}
 
   ngOnInit(): void {

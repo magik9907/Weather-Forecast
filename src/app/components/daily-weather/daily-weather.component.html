@@ -1,3 +1,4 @@
+@if(this.weather().daily.length>0) {
 <div>
   <div [class.days-container]="(isMobile | async) === false">
     <div class="center-container">
@@ -107,3 +108,4 @@
     } }
   </section>
 </div>
+}

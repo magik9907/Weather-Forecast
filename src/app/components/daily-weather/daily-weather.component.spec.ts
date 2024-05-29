@@ -5,6 +5,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { WeatherApiService } from '@services/api/weather-api.service';
 import { OpenWeatherMapDevService } from '@services/api/open-weather-map/open-weather-map-dev.service';
 import { cityWeather } from '@test/models';
+import { WeatherForecastService } from '@services/forecast/weather-forecast.service';
 
 describe('DailyWeatherComponent', () => {
   let component: DailyWeatherComponent;
@@ -16,6 +17,7 @@ describe('DailyWeatherComponent', () => {
       providers: [
         provideAnimationsAsync('noop'),
         { provide: WeatherApiService, useClass: OpenWeatherMapDevService },
+        WeatherForecastService,
       ],
     }).compileComponents();
 

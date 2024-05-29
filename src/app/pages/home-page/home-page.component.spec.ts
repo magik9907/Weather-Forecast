@@ -7,6 +7,7 @@ import { routes } from '@/app/app.routes';
 import { WeatherApiService } from '@services/api/weather-api.service';
 import { OpenWeatherMapDevService } from '@services/api/open-weather-map/open-weather-map-dev.service';
 import { provideHttpClient } from '@angular/common/http';
+import { WeatherForecastService } from '@services/forecast/weather-forecast.service';
 
 describe('HomePageComponent', () => {
   let component: HomePageComponent;
@@ -20,6 +21,7 @@ describe('HomePageComponent', () => {
         provideAnimationsAsync('noop'),
         provideRouter(routes),
         { provide: WeatherApiService, useClass: OpenWeatherMapDevService },
+        WeatherForecastService,
       ],
     }).compileComponents();
 

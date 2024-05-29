@@ -7,6 +7,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { routes } from '@/app/app.routes';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
+import { WeatherForecastService } from '@services/forecast/weather-forecast.service';
 
 describe('CityWeatherPageComponent', () => {
   let component: CityWeatherPageComponent;
@@ -20,6 +21,7 @@ describe('CityWeatherPageComponent', () => {
         provideAnimationsAsync('noop'),
         provideRouter(routes),
         provideHttpClient(),
+        WeatherForecastService,
       ],
     }).compileComponents();
 

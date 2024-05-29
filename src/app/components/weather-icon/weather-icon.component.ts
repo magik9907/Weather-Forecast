@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { LoadedErrorDirective } from '@directives/loaded-error.directive';
-import { WeatherApiService } from '@services/api/weather-api.service';
+import { WeatherForecastService } from '@services/forecast/weather-forecast.service';
 
 @Component({
   selector: 'app-weather-icon',
@@ -23,9 +23,9 @@ export class WeatherIconComponent {
   label = input.required<string>();
   title = computed(() => `Expected weather: ${this.label()}`);
   imgLoadError = signal(false);
-  apiService = inject(WeatherApiService);
+  weatherForecast = inject(WeatherForecastService);
   mapIcon(isLink: boolean) {
-    return this.apiService.mapIcon(this.icon(), isLink);
+    return this.weatherForecast.mapIcon(this.icon(), isLink);
   }
 
   onImgLoadError() {

@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { AsyncPipe } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
-import { WeatherApiService } from '@services/api/weather-api.service';
+import { WeatherForecastService } from '@services/forecast/weather-forecast.service';
 import { City } from '@/types';
 
 @Component({
@@ -34,7 +34,7 @@ import { City } from '@/types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePageComponent {
-  weatherApi = inject(WeatherApiService);
+  weatherApi = inject(WeatherForecastService);
   city = signal<City | null>(null);
   cityInput = signal<string>('');
   filteredOptions = computed(() =>

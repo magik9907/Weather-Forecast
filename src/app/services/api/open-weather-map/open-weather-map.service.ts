@@ -1,6 +1,4 @@
 import {
-  City,
-  CityWeather,
   SpecificWeatherForecast,
   WeatherIcon,
   WeekWeatherForecast,
@@ -11,12 +9,9 @@ import {
   catchError,
   delay,
   distinctUntilChanged,
-  forkJoin,
-  iif,
   map,
   mergeMap,
   of,
-  tap,
 } from 'rxjs';
 import { HttpErrorResponse, HttpParams } from '@angular/common/http';
 import {
@@ -28,8 +23,6 @@ import moment from 'moment';
 import { env } from '@env/env';
 
 export class OpenWeatherMapService extends WeatherApiService {
-  private cityWeather = new Map<string, CityWeather>();
-  private citiesSearchByKeyMap = new Map<string, City[]>();
   iconsMap: Record<string, WeatherIcon> = {
     '01n': 'clear_night',
     '01d': 'clear_day',
@@ -51,152 +44,81 @@ export class OpenWeatherMapService extends WeatherApiService {
     '50d': 'foggy',
   };
 
-  override updateCity(city: City): void {
-    const key = `${city.name},${city.state},${city.country}`.toUpperCase();
-    this.citiesSearchByKeyMap.set(key + this.appService.selectedMetric(), [
-      city,
-    ]);
-  }
-
-  override searchCity(city: string): Observable<City[]> {
-    if (!city) return of([]);
-    const upperCaseCity = city.toUpperCase();
-    return iif(
-      () => {
-        return this.citiesSearchByKeyMap.has(
-          upperCaseCity + this.appService.selectedMetric()
-        );
-      },
-      of(
-        this.citiesSearchByKeyMap.get(
-          upperCaseCity + this.appService.selectedMetric()
-        )!
-      ),
-      this.fetchGeolocationForCity(upperCaseCity).pipe(
-        map((res) => {
-          return res.map<City>((v) => {
-            return {
-              country: v.country,
-              lat: v.lat,
-              lon: v.lon,
-              name: v.name,
-              state: v.state,
-            };
-          });
-        }),
-        tap((v) =>
-          this.citiesSearchByKeyMap.set(
-            upperCaseCity + this.appService.selectedMetric(),
-            v
-          )
-        )
-      )
-    );
-  }
-
-  override getCityWeather(city: City): Observable<CityWeather> {
-    const key = `${city.name},${city.state},${city.country}`.toUpperCase();
-    return iif(
-      () => this.cityWeather.has(key + this.appService.selectedMetric()),
-      of(this.cityWeather.get(key + this.appService.selectedMetric())!),
-      this.fetchData(key, city)
-    );
-  }
-
-  override getCityWeatherByString(
-    city: string,
-    state: string,
-    country: string
-  ): Observable<CityWeather> {
-    const key = `${city},${state},${country}`.toUpperCase();
-    return this.searchCity(key).pipe(
-      mergeMap((v) => {
-        return this.fetchData(key, v[0]);
-      })
-    );
-  }
-
-  protected fetchData(key: string, city: City) {
-    return of(city).pipe(
-      mergeMap<City, Observable<CityWeather>>((cityObj) => {
-        return forkJoin({
-          geolocation: of(cityObj),
-          week: this.fetch8DaysForecast(cityObj.lat, cityObj.lon).pipe(
-            this.map8DaysForecast()
-          ),
-          daily: this.fetch5DaysForecast(cityObj.lat, cityObj.lon).pipe(
-            this.map5DaysForecast()
-          ),
-        });
-      }),
-      catchError((e: HttpErrorResponse, c) => {
-        this.appService.messageSubject.next({ code: e.status });
-        return [];
-      }),
-      tap((v) =>
-        this.cityWeather.set(key + this.appService.selectedMetric(), v)
-      )
-    );
-  }
-
   private initParams() {
     let params = new HttpParams();
     if (env.api_key) params = params.appendAll({ appid: env.api_key });
     return params;
   }
-
-  protected fetchGeolocationForCity(
+  protected makeGeolocationForCityRequest(city: string) {
+    let params = this.initParams();
+    params = params.append('q', city);
+    params = params.append('limit', 10);
+    return this.httpClient.get<GeolocationResponse[]>(
+      `${env.api_url}/geo/1.0/direct`,
+      { params }
+    );
+  }
+  override fetchGeolocationForCity(
     city: string
   ): Observable<GeolocationResponse[]> {
     return of(city).pipe(
       delay(500),
       distinctUntilChanged(),
-      mergeMap((city) => {
-        let params = this.initParams();
-        params = params.append('q', city);
-        params = params.append('limit', 10);
-        return this.httpClient.get<GeolocationResponse[]>(
-          `${env.api_url}/geo/1.0/direct`,
-          { params }
-        );
-      }),
-      catchError((e: HttpErrorResponse, c) => {
+      mergeMap((city) => this.makeGeolocationForCityRequest(city)),
+      catchError((e: HttpErrorResponse) => {
         this.appService.messageSubject.next({ code: e.status });
         return [];
       })
     );
   }
 
-  protected fetch5DaysForecast(
-    lat: number,
-    lon: number
-  ): Observable<Forecast5DaysResponse> {
+  protected make5DaysForecastRequest(lat: number, lon: number) {
     let params = this.initParams();
     params = params.appendAll({ lat, lon });
-    const metric = this.appService.selectedMetric();
+    const metric = this.getUnit();
     if (metric) {
-      params=params.append('units', metric);
+      params = params.append('units', metric);
     }
     return this.httpClient.get<Forecast5DaysResponse>(
       `${env.api_url}/data/2.5/forecast`,
+      {
+        params,
+      }
+    );
+  }
+
+  override fetch5DaysForecast(
+    lat: number,
+    lon: number
+  ): Observable<SpecificWeatherForecast[]> {
+    return this.make5DaysForecastRequest(lat, lon).pipe(
+      this.map5DaysForecast()
+    );
+  }
+
+  protected make8DaysForecastRequest(lat: number, lon: number) {
+    let params = this.initParams();
+    params = params.appendAll({
+      lat,
+      lon,
+      exclude: 'current,minutely,hourly,alerts',
+    });
+    const metric = this.getUnit();
+    if (metric) {
+      params = params.append('units', metric);
+    }
+    return this.httpClient.get<Forecast8DaysResponse>(
+      `${env.api_url}/data/3.0/onecall`,
       { params }
     );
   }
 
-  protected fetch8DaysForecast(
+  override fetch8DaysForecast(
     lat: number,
     lon: number
-  ): Observable<Forecast8DaysResponse> {
-    let params = this.initParams();
-    params = params.appendAll({ lat, lon,exclude:'current,minutely,hourly,alerts' });
-    const metric = this.appService.selectedMetric();
-    if (metric) {
-      params=params.append('units', metric);
-    }
-
-    return this.httpClient.get<Forecast8DaysResponse>(
-      `${env.api_url}/data/3.0/onecall`,
-      { params }
+  ): Observable<WeekWeatherForecast> {
+    return this.make8DaysForecastRequest(lat, lon).pipe(
+      this.map8DaysForecast()
     );
   }
 

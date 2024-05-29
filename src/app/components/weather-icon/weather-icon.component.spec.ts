@@ -4,6 +4,7 @@ import { WeatherIconComponent } from './weather-icon.component';
 import { OpenWeatherMapDevService } from '@services/api/open-weather-map/open-weather-map-dev.service';
 import { WeatherApiService } from '@services/api/weather-api.service';
 import { provideHttpClient } from '@angular/common/http';
+import { WeatherForecastService } from '@services/forecast/weather-forecast.service';
 
 describe('WeatherIconComponent', () => {
   let component: WeatherIconComponent;
@@ -15,6 +16,7 @@ describe('WeatherIconComponent', () => {
       providers: [
         { provide: WeatherApiService, useClass: OpenWeatherMapDevService },
         provideHttpClient(),
+        WeatherForecastService,
       ],
     }).compileComponents();
 

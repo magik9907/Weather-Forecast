@@ -13,7 +13,7 @@ export class OpenWeatherMapDevService extends OpenWeatherMapService {
     return 'http://testlinkerror';
   }
 
-  protected override fetch5DaysForecast(
+  protected override make5DaysForecastRequest(
     lat: number,
     lon: number
   ): Observable<Forecast5DaysResponse> {
@@ -1515,7 +1515,7 @@ export class OpenWeatherMapDevService extends OpenWeatherMapService {
     });
   }
 
-  protected override fetch8DaysForecast(
+  protected override make8DaysForecastRequest(
     lat: number,
     lon: number
   ): Observable<Forecast8DaysResponse> {
@@ -3022,7 +3022,7 @@ export class OpenWeatherMapDevService extends OpenWeatherMapService {
     });
   }
 
-  protected override fetchGeolocationForCity(
+  protected override makeGeolocationForCityRequest(
     city: string
   ): Observable<GeolocationResponse[]> {
     return of([
